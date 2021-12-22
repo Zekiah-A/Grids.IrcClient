@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Net.Security;
 using System.Net.Sockets;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Threading;
 
@@ -145,7 +146,9 @@ public class IrcClient : IDisposable
     public event EventHandler<StringEventArgs> NickTaken = delegate { };
 
     public event EventHandler OnConnect = delegate { };
+    public event EventHandler OnDisconnect = delegate { };
 
+    
     public event EventHandler<ExceptionEventArgs> ExceptionThrown = delegate { };
 
     public event EventHandler<ModeSetEventArgs> ChannelModeSet = delegate { };
@@ -198,6 +201,11 @@ public class IrcClient : IDisposable
     private void Fire_Connected()
     {
         op.Post(x => OnConnect(this, null), null);
+    }
+
+    private void Fire_Disconnected()
+    {
+        op.Post(x => OnDisconnect(this, null), null);
     }
 
     private void Fire_ExceptionThrown(Exception ex)
@@ -263,8 +271,10 @@ public class IrcClient : IDisposable
     {
         if (irc != null)
         {
-            if (irc.Connected) Send("QUIT Client Disconnected: http://tech.reboot.pro");
+            if (irc.Connected) Send($"QUIT Client Disconnected: {Nick}");
             irc = null;
+
+            Fire_Disconnected();
         }
     }
 
