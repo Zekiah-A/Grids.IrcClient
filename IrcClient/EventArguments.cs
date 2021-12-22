@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace IRCClient;
+namespace IrcClient;
 
 public class UpdateUsersEventArgs : EventArgs
 {
