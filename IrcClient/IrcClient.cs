@@ -6,7 +6,7 @@ using System.Net.Sockets;
 using System.Text.RegularExpressions;
 using System.Threading;
 
-namespace IrcClient;
+//namespace IrcClient;
 
 /// <summary>
 ///     IRC Client class written at http://tech.reboot.pro
